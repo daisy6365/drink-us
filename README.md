@@ -251,6 +251,7 @@ DrinkUs는 나이대 및 관심사 기반 방 추천을 통해 처음 만나도 
    - `refactor` : 코드 리팩토링에 대한 커밋
    - `test` : 테스트 코드 수정에 대한 커밋
 
+
 ## 이미지 출처
 ### [flaticon](https://www.flaticon.com/)
 - [술 아이콘](https://www.flaticon.com/packs/cocktails-45?word=drink)
