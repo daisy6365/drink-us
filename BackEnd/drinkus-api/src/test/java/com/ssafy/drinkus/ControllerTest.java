@@ -5,6 +5,8 @@ import com.ssafy.drinkus.config.LoginUserArgumentResolver;
 import com.ssafy.drinkus.security.filter.JwtAuthenticationFilter;
 import com.ssafy.drinkus.security.handler.CustomAccessDeniedHandler;
 import com.ssafy.drinkus.security.handler.CustomAuthenticationEntryPoint;
+import com.ssafy.drinkus.security.handler.CustomSimpleRulAuthenticationSuccessHandler;
+import com.ssafy.drinkus.security.service.CustomOAuth2UserService;
 import com.ssafy.drinkus.security.service.CustomUserDetailsService;
 import com.ssafy.drinkus.security.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @AutoConfigureRestDocs
 @ExtendWith(RestDocumentationExtension.class)
 public abstract class ControllerTest {
-
     @Autowired
     protected ObjectMapper objectMapper;
 
@@ -37,19 +39,27 @@ public abstract class ControllerTest {
     protected CustomUserDetailsService customUserDetailsService;
 
     @MockBean
-    protected LoginUserArgumentResolver loginUserArgumentResolver;
-
-    @MockBean
     protected CustomAccessDeniedHandler accessDeniedHandler;
 
     @MockBean
     protected CustomAuthenticationEntryPoint authenticationEntryPoint;
 
+    @MockBean
+    protected CustomOAuth2UserService customOAuth2UserService;
+
+    @MockBean
+    protected CustomSimpleRulAuthenticationSuccessHandler customSimpleRulAuthenticationSuccessHandler;
+
+    @MockBean
+    protected OAuth2UserService oAuth2UserService;
+
+
     protected MockMvc mockMvc;
 
+    // MockMvc 생성때 추가
     @BeforeEach
     void setUp(WebApplicationContext wac, RestDocumentationContextProvider restDocumentationContextProvider) {
-        JwtAuthenticationFilter jwtAuthenticationFilter = (JwtAuthenticationFilter) wac.getBean("jwtAuthenticationFilter");
+        JwtAuthenticationFilter jwtAuthenticationFilter =  (JwtAuthenticationFilter) wac.getBean("jwtAuthenticationFilter");
 
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(wac)

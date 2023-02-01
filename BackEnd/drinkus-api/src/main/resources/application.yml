@@ -12,16 +12,13 @@ spring:
       client:
         registration:
           google:
-            client-id: clientId
-            client-secret: clientSecret
+            client-id: 544385537574-774c31vj941hkdl0fp70vt0skjc3je3n.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - email
               - profile
-            scope:
-              - email
-              - public_profile
           kakao:
-            client-id: clientId
+            client-id: c72139d8987d18a01da876852d181267
             redirect-uri: https://i7b306.p.ssafy.io/login/oauth2/code/kakao #기본 제공 클라이언트가 아니기 때문에 반드시 적어줘야 함. 그래서 아무거나 적어도 되지만 되도록 규칙에 맞추기
             client-authentication-method: POST
             authorization-grant-type: authorization_code #oauth2의 코드 방식 사용
