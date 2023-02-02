@@ -2,6 +2,7 @@ package com.ssafy.drinkus.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.drinkus.category.service.CategoryService;
+import com.ssafy.drinkus.common.type.TokenType;
 import com.ssafy.drinkus.security.util.JwtUtil;
 import com.ssafy.drinkus.user.domain.UserRepository;
 import com.ssafy.drinkus.user.service.UserService;
@@ -14,10 +15,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import java.util.Optional;
 
+import static com.ssafy.drinkus.user.UserFixture.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.times;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -54,7 +62,24 @@ class JwtAuthenticationFilterTest {
     }
 
     @Test
-    void doFilter() {
+    @DisplayName("필터링을 한다.")
+    void doFilter() throws Exception {
+        // given
+        String jwtToken = "Bearer " + jwtUtil.createToken(TEST_USER.getUserId(), TokenType.ACCESS_TOKEN);
+
+        given(userRepository.findById(any()))
+                .willReturn(Optional.of(TEST_USER));
+        given(userService.findUserByUserNickname(TEST_USER_NICKNAME))
+                .willReturn(TEST_USER_PROFILE_RESPONSE);
+        // when
+        mockMvc.perform(get("/api/users/profile")
+                        .header(HttpHeaders.AUTHORIZATION, jwtToken)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect((ResultMatcher) content().json(objectMapper.writeValueAsString(TEST_USER_PROFILE_RESPONSE)));
+        // then
+        then(userRepository).should(times(1)).findById(any());
+        then(userService).should(times(1)).findUserByUserNickname(TEST_USER_NICKNAME);
     }
 
     @Test
