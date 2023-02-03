@@ -25,9 +25,9 @@ import static com.ssafy.drinkus.user.UserFixture.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.times;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -69,17 +69,18 @@ class JwtAuthenticationFilterTest {
 
         given(userRepository.findById(any()))
                 .willReturn(Optional.of(TEST_USER));
-        given(userService.findUserByUserNickname(TEST_USER_NICKNAME))
-                .willReturn(TEST_USER_PROFILE_RESPONSE);
+        given(userService.findUserMyInfo(any()))
+                .willReturn(TEST_USER_MYINFO_RESPONSE);
         // when
-        mockMvc.perform(get("/api/users/profile")
+        mockMvc.perform(get("/api/users")
                         .header(HttpHeaders.AUTHORIZATION, jwtToken)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) content().json(objectMapper.writeValueAsString(TEST_USER_PROFILE_RESPONSE)));
+                .andExpect(content().json(objectMapper.writeValueAsString(TEST_USER_PROFILE_RESPONSE)));
+
         // then
         then(userRepository).should(times(1)).findById(any());
-        then(userService).should(times(1)).findUserByUserNickname(TEST_USER_NICKNAME);
+        then(userService).should(times(1)).findUserMyInfo(any());
     }
 
     @Test

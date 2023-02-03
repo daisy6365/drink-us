@@ -5,6 +5,7 @@ import com.ssafy.drinkus.user.domain.User;
 import com.ssafy.drinkus.user.domain.UserSubCategory;
 import com.ssafy.drinkus.user.domain.type.UserProvider;
 import com.ssafy.drinkus.user.domain.type.UserRole;
+import com.ssafy.drinkus.user.response.UserMyInfoResponse;
 import com.ssafy.drinkus.user.response.UserProfileResponse;
 
 import java.time.LocalDateTime;
@@ -42,4 +43,5 @@ public class UserFixture {
             , TEST_USER_INTRODUCE, TEST_USER_IMG, TEST_USER_ROLE, TEST_USER_PROVIDER, TEST_USER_PROVIDER_ID, TEST_USER_POINT, TEST_USER_STOPDATE, TEST_USER_SOJU, TEST_USER_BEER, TEST_FCM_TOKEN, TEST_ROOM_LIST, TEST_USER_SUBCATEGORY);
 
     public static final UserProfileResponse TEST_USER_PROFILE_RESPONSE = new UserProfileResponse(TEST_USER_NICKNAME, TEST_USER_POPULARITY, TEST_USER_INTRODUCE, TEST_USER_IMG, TEST_USER_SOJU, TEST_USER_BEER);
+    public static final UserMyInfoResponse TEST_USER_MYINFO_RESPONSE = new UserMyInfoResponse(TEST_USER_ID, TEST_USER_NAME, TEST_USER_FULLNAME, TEST_USER_NICKNAME, TEST_USER_POPULARITY, TEST_USER_BIRTHDAY, TEST_USER_STOPDATE, TEST_USER_INTRODUCE, TEST_USER_IMG, TEST_USER_ROLE, TEST_USER_POINT, TEST_USER_SOJU, TEST_USER_BEER);
 }
